@@ -10,29 +10,3 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - name: run cypress tests with chrome
-        uses: cypress-io/github-action@v5
-        timeout-minutes: 60
-        with:
-          browser: chrome
-          headed: false
-      - name: Uploading artifact
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: cypress-execution-report
-          path: cypress/reports/html
-          retention-days: 30
-      - name: Post to a Slack channel
-        if: always()
-        id: slack
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: 'C04PABWDVLH'
-          slack-message:  E2E pipeline finished. Results can be found here ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        env:
-          SLACK_BOT_TOKEN: xoxb-343044084423-4772803307446-oTxVziGO0UsSshf6dIlo04RH
